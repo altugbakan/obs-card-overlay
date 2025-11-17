@@ -1,5 +1,5 @@
 export const socket = io("http://127.0.0.1:5000");
-export const showToast = (msg, type = "error") => {
+export function showToast(msg, type = "error") {
     const container = document.getElementById("toast-container");
 
     if (!container) {
