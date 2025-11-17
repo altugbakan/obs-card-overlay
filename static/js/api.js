@@ -30,7 +30,6 @@ export async function fetchPreview(query) {
 
         const res = await fetch(url);
 
-        // catch 404, 500, etc. BEFORE parsing JSON
         if (!res.ok) {
             throw new Error(`HTTP ${res.status}`);
         }
@@ -58,10 +57,9 @@ export async function fetchPreview(query) {
         setPreviewImage(img);
 
         return card;
-
     } catch (err) {
         showToast("Card not found");
-        return { error: err.message };
+        return;
     }
 }
 

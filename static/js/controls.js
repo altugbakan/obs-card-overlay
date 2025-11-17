@@ -20,34 +20,35 @@ document.getElementById("prev-number").onclick = () => {
   }
 };
 
-sendBtn.onclick = async () => {
+async function sendToOverlay() {
   const name = input.value.trim();
   if (!name) return;
 
-  await fetchPreview(name);
+  const card = await fetchPreview(name);
+  if (!card) return;
+
   sendCard(name);
   historyPush(name);
   input.value = "";
   input.blur();
-};
+}
 
-input.addEventListener("keydown", e => {
+sendBtn.addEventListener("click", async () => {
+  await sendToOverlay();
+});
+
+
+input.addEventListener("keydown", async e => {
   if (e.key === "Tab") {
     e.preventDefault();
-    fetchPreview(input.value.trim());
+    await fetchPreview(input.value.trim());
   }
 });
 
 input.addEventListener("keydown", async e => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const name = input.value.trim();
-    if (!name) return;
 
-    await fetchPreview(name);
-    sendCard(name);
-    historyPush(name);
-    input.value = "";
-    input.blur();
+    await sendToOverlay();
   }
 });
