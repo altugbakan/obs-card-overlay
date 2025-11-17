@@ -1,5 +1,5 @@
 import { historyPush } from "./history.js";
-import { socket } from "./utils.js";
+import { showToast, socket } from "./utils.js";
 
 function setPreviewImage(img) {
     const preview = document.getElementById("preview");
@@ -27,19 +27,26 @@ export async function fetchPreview(query) {
     try {
         const searchQuery = `${query} game:paper`;
         const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(searchQuery)}`;
+
         const res = await fetch(url);
+
+        // catch 404, 500, etc. BEFORE parsing JSON
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+
         const data = await res.json();
 
         if (!data.data || data.data.length === 0) {
-            return { error: "No results found." };
+            throw new Error("No results found.");
         }
 
         const card = data.data[0];
 
         window.currentCardData = card;
         window.currentFace = 0;
-        if (card.set) window.currentSet = card.set;
-        if (card.collector_number) window.currentNumber = card.collector_number;
+        window.currentSet = card.set ?? null;
+        window.currentNumber = card.collector_number ?? null;
 
         let img = null;
         if (card.image_uris) {
@@ -47,14 +54,17 @@ export async function fetchPreview(query) {
         } else if (card.card_faces) {
             img = card.card_faces[0].image_uris?.normal ?? null;
         }
+
         setPreviewImage(img);
 
         return card;
+
     } catch (err) {
-        console.error("fetchPreview failed", err);
-        return { error: "Search failed." };
+        showToast("Card not found");
+        return { error: err.message };
     }
 }
+
 
 export function sendCard(name) {
     const data = window.currentCardData;
@@ -76,7 +86,6 @@ export function sendCardNoHistory(name) {
 
 export async function fetchCardByNumber(setCode, number, addToHistory = true) {
     try {
-        // Prefer paper prints when fetching by set/number
         const q = encodeURIComponent(`set:${setCode} number:${number} game:paper`);
         const res = await fetch(`https://api.scryfall.com/cards/search?q=${q}`);
         const data = await res.json();
@@ -100,7 +109,7 @@ export async function fetchCardByNumber(setCode, number, addToHistory = true) {
         }
 
     } catch (err) {
-        console.error("Number fetch failed", err);
+        showToast(`Could not fetch card ${setCode}-${number}`)
     }
 }
 

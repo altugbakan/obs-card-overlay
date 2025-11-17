@@ -28,7 +28,6 @@ sendBtn.onclick = async () => {
   sendCard(name);
   historyPush(name);
   input.value = "";
-  // move focus away from the input so Enter blurs
   input.blur();
 };
 
@@ -49,7 +48,6 @@ input.addEventListener("keydown", async e => {
     sendCard(name);
     historyPush(name);
     input.value = "";
-    // remove focus so subsequent hotkeys work
     input.blur();
   }
 });
