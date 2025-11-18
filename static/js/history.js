@@ -6,6 +6,10 @@ let historyIndex = -1;
 const MAX_HISTORY = 5;
 
 export function historyPush(name) {
+  if (historyIndex < cardHistory.length - 1) {
+    cardHistory = cardHistory.slice(0, historyIndex + 1);
+  }
+
   cardHistory.push({
     name,
     face: window.currentFace,
