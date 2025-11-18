@@ -20,9 +20,12 @@ document.getElementById("prev-number").onclick = () => {
   }
 };
 
-async function sendToOverlay() {
+export async function sendToOverlay() {
   const name = input.value.trim();
-  if (!name) return;
+  if (!name) {
+    sendCard(window.currentCardData.name);
+    return;
+  }
 
   const card = await fetchPreview(name);
   if (!card) return;
@@ -36,7 +39,6 @@ async function sendToOverlay() {
 sendBtn.addEventListener("click", async () => {
   await sendToOverlay();
 });
-
 
 input.addEventListener("keydown", async e => {
   if (e.key === "Tab") {
