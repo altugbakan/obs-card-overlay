@@ -3,7 +3,7 @@ import { fetchCardByNumber } from "./api.js";
 let cardHistory = [];
 let historyIndex = -1;
 
-const MAX_HISTORY = 5;
+const MAX_HISTORY = 25;
 
 export function historyPush(name) {
   if (historyIndex < cardHistory.length - 1) {
