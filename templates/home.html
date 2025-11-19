@@ -8,14 +8,12 @@
       href="{{ url_for('static', filename='favicon.ico') }}"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/colors.css') }}"
+    />
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
-      :root {
-        --bg: #0f1720;
-        --panel: #111827;
-        --accent: #6200ee;
-        --text: #e6eef8;
-      }
       html,
       body {
         height: 100%;
@@ -59,7 +57,8 @@
       }
       .actions {
         display: flex;
-        gap: 0.75rem;
+        gap: 2rem;
+        justify-content: center;
       }
       a.btn {
         display: inline-flex;

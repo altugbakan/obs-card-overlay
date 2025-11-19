@@ -8,10 +8,14 @@
       href="{{ url_for('static', filename='favicon.ico') }}"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/colors.css') }}"
+    />
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script type="module" src="/static/js/overlay.js"></script>
     <script>
-        window.SOCKET_PORT = {{ port }};
+      window.SOCKET_PORT = {{ port }};
     </script>
     <style>
       html,
@@ -20,7 +24,7 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        background-color: #121212;
+        background-color: var(--bg);
         display: flex;
         justify-content: center;
         align-items: center;
