@@ -1,10 +1,10 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
+PORT = 5050
+
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
-port = 5050
-
 
 @app.route("/")
 def home():
@@ -13,12 +13,12 @@ def home():
 
 @app.route("/control")
 def control():
-    return render_template("control.html")
+    return render_template("control.html", port=PORT)
 
 
 @app.route("/overlay")
 def overlay():
-    return render_template("overlay.html")
+    return render_template("overlay.html", port=PORT)
 
 
 @socketio.on("set_card")
@@ -31,5 +31,5 @@ def handle_set_card(data):
 
 
 if __name__ == "__main__":
-    print(f"Starting Flask + SocketIO server on port http://localhost:{port}")
-    socketio.run(app, host="0.0.0.0", port=port)
+    print(f"Starting Flask + SocketIO server on port http://localhost:{PORT}")
+    socketio.run(app, host="127.0.0.1", port=PORT)

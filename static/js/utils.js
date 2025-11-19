@@ -1,4 +1,4 @@
-export const socket = io("http://127.0.0.1:5050");
+export const socket = io(`http://127.0.0.1:${window.SOCKET_PORT}`);
 export function showToast(msg, type = "error") {
     const container = document.getElementById("toast-container");
 
