@@ -9,6 +9,7 @@
       type="image/x-icon"
     />
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script type="module" src="/static/js/overlay.js"></script>
     <script>
         window.SOCKET_PORT = {{ port }};
     </script>
@@ -39,6 +40,5 @@
   </head>
   <body>
     <img id="card" src="" alt="MTG Card" />
-    <script type="module" src="/static/js/overlay.js"></script>
   </body>
 </html>

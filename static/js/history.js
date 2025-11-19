@@ -1,5 +1,3 @@
-import { saveCard } from "./card.js";
-
 let cardHistory = [];
 let historyIndex = -1;
 
@@ -19,15 +17,14 @@ export function historyPush(card) {
   historyIndex = cardHistory.length - 1;
 }
 
-export async function navigateHistory(offset) {
+export function navigateHistory(offset) {
   const newIndex = historyIndex + offset;
   if (newIndex < 0 || newIndex >= cardHistory.length) {
-    return false;
+    return;
   }
 
   historyIndex = newIndex;
   const card = cardHistory[historyIndex];
-  saveCard(card);
 
-  return true;
+  return card;
 }

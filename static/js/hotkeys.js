@@ -1,7 +1,12 @@
-import { navigateHistory } from "./history.js";
-import { fetchNextCard, fetchPreviousCard, sendCard } from "./api.js";
-import { focusInput, sendToOverlay } from "./controls.js";
-import { flipCard } from "./card.js";
+import {
+  flipCurrentCard,
+  focusInput,
+  getNextCard,
+  getNextCardInHistory,
+  getPreviousCard,
+  getPreviousCardInHistory,
+  sendToOverlay,
+} from "./control.js";
 
 document.addEventListener("keydown", async (e) => {
   if (e.target.tagName === "INPUT") return;
@@ -14,28 +19,30 @@ document.addEventListener("keydown", async (e) => {
     case "ArrowLeft":
     case "h":
     case "H":
-      await navigateHistory(-1);
+      getPreviousCardInHistory();
       break;
     case "ArrowRight":
     case "l":
     case "L":
-      await navigateHistory(1);
+      getNextCardInHistory();
       break;
     case "f":
     case "F":
-      sendCard(flipCard());
+      flipCurrentCard();
       break;
+    case "ArrowUp":
     case "n":
     case "N":
     case "k":
     case "K":
-      await fetchNextCard();
+      await getNextCard();
       break;
+    case "ArrowDown":
     case "b":
     case "B":
     case "j":
     case "J":
-      await fetchPreviousCard();
+      await getPreviousCard();
       break;
     case "/":
       focusInput(e);

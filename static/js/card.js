@@ -6,6 +6,8 @@ export function saveCard(card) {
   } else {
     card.image = card.image_uris.normal;
   }
+  card.number = parseInt(card.collector_number);
+
   window.card = card;
   return card;
 }
