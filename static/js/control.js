@@ -5,6 +5,9 @@ import "./hotkeys.js";
 
 const input = document.getElementById("cardName");
 
+window.addEventListener("dragover", (e) => e.preventDefault());
+window.addEventListener("drop", async (e) => await handleDrop(e));
+
 document.getElementById("prev").onclick = getPreviousCardInHistory;
 document.getElementById("next").onclick = getNextCardInHistory;
 document.getElementById("flip").onclick = flipCurrentCard;
@@ -17,7 +20,7 @@ document.getElementById("cardName").onkeydown = async (e) => {
   switch (e.key) {
     case "Tab":
       e.preventDefault();
-      const card = await fetchQuery(input.value.trim());
+      const card = await fetchQuery(e.target.value.trim());
       saveCard(card);
       setPreviewImage(card.image);
       break;
@@ -168,4 +171,33 @@ export function focusInput(e) {
       input.setSelectionRange(len, len);
     } catch (e) {}
   }
+}
+
+async function handleDrop(e) {
+  e.preventDefault();
+
+  const url = e.dataTransfer.getData("text/uri-list");
+
+  if (!url) {
+    showToast("No usable URL dropped");
+    return;
+  }
+
+  const match = url.match(/\/card\/([^/]+)\/([^/]+)/i);
+  if (!match) {
+    showToast("URL does not match any card");
+    return;
+  }
+
+  const [, set, number] = match;
+  const card = await fetchCardByNumber(set, number);
+  if (!card) {
+    showToast("Could not fetch card");
+    return;
+  }
+
+  saveCard(card);
+  setPreviewImage(card.image);
+  sendCard(card);
+  historyPush(card);
 }
