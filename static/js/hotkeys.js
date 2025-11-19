@@ -1,19 +1,7 @@
 import { navigateHistory } from "./history.js";
-import { flipCard, fetchCardByNumber } from "./api.js";
-import { sendToOverlay } from "./controls.js";
-
-function focusInput(e) {
-  const input = document.getElementById("cardName");
-  if (input) {
-    e.preventDefault();
-    input.focus();
-
-    const len = input.value?.length || 0;
-    try {
-      input.setSelectionRange(len, len);
-    } catch (e) {}
-  }
-}
+import { fetchNextCard, fetchPreviousCard, sendCard } from "./api.js";
+import { focusInput, sendToOverlay } from "./controls.js";
+import { flipCard } from "./card.js";
 
 document.addEventListener("keydown", async (e) => {
   if (e.target.tagName === "INPUT") return;
@@ -35,27 +23,19 @@ document.addEventListener("keydown", async (e) => {
       break;
     case "f":
     case "F":
-      flipCard();
+      sendCard(flipCard());
       break;
     case "n":
     case "N":
     case "k":
     case "K":
-      if (window.currentSet && window.currentNumber)
-        await fetchCardByNumber(
-          window.currentSet,
-          parseInt(window.currentNumber) + 1
-        );
+      await fetchNextCard();
       break;
     case "b":
     case "B":
     case "j":
     case "J":
-      if (window.currentSet && window.currentNumber > 1)
-        await fetchCardByNumber(
-          window.currentSet,
-          parseInt(window.currentNumber) - 1
-        );
+      await fetchPreviousCard();
       break;
     case "/":
       focusInput(e);
